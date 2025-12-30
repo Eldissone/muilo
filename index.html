@@ -2,16 +2,892 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8" />
-  <title>Nexus Analytics – Investimentos Inteligentes</title>
+  <title>Nexus Analytics – Estratégias Inteligentes para Redes Sociais</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="./src/style.css">
-</head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
 
+    :root {
+      --primary: #4f46e5;
+      --secondary: #7c3aed;
+      --accent: #06b6d4;
+      --dark: #0f172a;
+      --darker: #020617;
+      --light: #f8fafc;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+
+    body {
+      background: var(--darker);
+      color: var(--light);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    .cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s, width 0.3s, height 0.3s, background 0.3s;
+      z-index: 9999;
+      mix-blend-mode: difference;
+    }
+
+    .cursor.hover {
+      width: 40px;
+      height: 40px;
+      background: rgba(6, 182, 212, 0.2);
+    }
+
+    /* Background Effects */
+    .gradient-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .floating-elements {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .floating-element {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      opacity: 0.1;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(1) {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .floating-element:nth-child(2) {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+
+    .floating-element:nth-child(3) {
+      width: 150px;
+      height: 150px;
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 4s;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 1.5rem 5%;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo-icon {
+      animation: pulse 2s infinite;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      transition: width 0.3s;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .demo-btn {
+      padding: 0.8rem 1.5rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border: none;
+      border-radius: 50px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .demo-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+    }
+
+    /* Hero Section */
+    .section {
+      min-height: 100vh;
+      padding: 120px 10%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 1;
+      position: relative;
+    }
+
+    .hero {
+      padding-top: 180px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 20px;
+      background: rgba(79, 70, 229, 0.1);
+      border: 1px solid rgba(79, 70, 229, 0.3);
+      border-radius: 50px;
+      margin-bottom: 2rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .badge-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .title-line {
+      display: block;
+    }
+
+    .highlight {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+    }
+
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: rgba(79, 70, 229, 0.2);
+      z-index: -1;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      opacity: 0.8;
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      line-height: 1.6;
+    }
+
+    .cta-container {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 4rem;
+    }
+
+    .cta-primary, .cta-secondary {
+      padding: 1.2rem 2.5rem;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .cta-primary {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+    }
+
+    .cta-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .cta-primary:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(79, 70, 229, 0.4);
+    }
+
+    .cta-secondary:hover {
+      border-color: var(--primary);
+      background: rgba(79, 70, 229, 0.1);
+    }
+
+    .platform-icons {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .platform-icon {
+      font-size: 2.5rem;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.3s;
+    }
+
+    .platform-icon:hover {
+      color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .mouse {
+      width: 30px;
+      height: 50px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .wheel {
+      width: 4px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 2px;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: scroll 2s infinite;
+    }
+
+    /* Problems Section */
+    .problems-section {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0) 100%);
+      border-radius: 40px;
+      margin: 4rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 4rem;
+    }
+
+    .section-title {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .section-subtitle {
+      display: block;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .section-description {
+      font-size: 1.2rem;
+      opacity: 0.7;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .problem-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+    }
+
+    .problem-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px rgba(79, 70, 229, 0.1);
+    }
+
+    .problem-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .problem-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .problem-card p {
+      opacity: 0.8;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    /* Features Section */
+    .features-section {
+      padding: 6rem 10%;
+    }
+
+    .features-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .feature-tab {
+      padding: 1rem 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .feature-tab.active {
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+      border-color: transparent;
+    }
+
+    .feature-content {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .feature-item i {
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin-top: 0.2rem;
+    }
+
+    /* Demo Section */
+    .demo-section {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(2, 6, 23, 0) 100%);
+      border-radius: 40px;
+      margin: 4rem 0;
+      text-align: center;
+    }
+
+    .demo-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .demo-form {
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 20px;
+      padding: 3rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group select, .form-group input {
+      flex: 1;
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-size: 1rem;
+    }
+
+    .analyze-btn {
+      width: 100%;
+      padding: 1.2rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s;
+    }
+
+    .analyze-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+    }
+
+    .demo-result {
+      display: none;
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-top: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: left;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .profile-score {
+      background: linear-gradient(90deg, var(--success), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .result-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+
+    .result-item h4 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .suggestions-list {
+      list-style: none;
+      margin-top: 1.5rem;
+    }
+
+    .suggestions-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .suggestions-list li i {
+      color: var(--success);
+    }
+
+    /* Pricing Section */
+    .pricing-section {
+      padding: 6rem 10%;
+      text-align: center;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 3rem auto 0;
+    }
+
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 3rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card.popular {
+      border-color: var(--primary);
+      transform: translateY(-10px);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border-bottom-left-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .pricing-header {
+      margin-bottom: 2rem;
+    }
+
+    .pricing-name {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .pricing-price {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin: 2rem 0;
+    }
+
+    .pricing-features li {
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-features li i {
+      color: var(--success);
+    }
+
+    .pricing-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .pricing-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+    }
+
+    /* Roadmap Section */
+    .roadmap-section {
+      padding: 6rem 10%;
+    }
+
+    .roadmap-timeline {
+      position: relative;
+      max-width: 1200px;
+      margin: 4rem auto 0;
+    }
+
+    .roadmap-timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--primary), var(--accent));
+      transform: translateX(-50%);
+    }
+
+    .roadmap-item {
+      position: relative;
+      margin-bottom: 4rem;
+      width: 45%;
+    }
+
+    .roadmap-item:nth-child(odd) {
+      left: 0;
+    }
+
+    .roadmap-item:nth-child(even) {
+      left: 55%;
+    }
+
+    .roadmap-phase {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    .roadmap-phase::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      width: 20px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .roadmap-item:nth-child(odd) .roadmap-phase::before {
+      right: -45px;
+    }
+
+    .roadmap-item:nth-child(even) .roadmap-phase::before {
+      left: -45px;
+    }
+
+    .phase-number {
+      display: inline-block;
+      padding: 5px 15px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 3rem 5%;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .footer-copyright {
+      opacity: 0.5;
+      font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      100% { transform: translateX(-50%) translateY(20px); opacity: 0; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .features-tabs {
+        flex-direction: column;
+      }
+      
+      .form-group {
+        flex-direction: column;
+      }
+      
+      .roadmap-timeline::before {
+        left: 30px;
+      }
+      
+      .roadmap-item {
+        width: 100%;
+        left: 0 !important;
+        padding-left: 60px;
+      }
+      
+      .roadmap-phase::before {
+        left: -40px !important;
+      }
+      
+      body {
+        cursor: auto;
+      }
+      
+      .cursor {
+        display: none;
+      }
+    }
+  </style>
+</head>
 <body>
   <div class="cursor"></div>
   <div class="gradient-bg"></div>
+  <div class="floating-elements">
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+  </div>
   
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-container">
       <div class="logo">
@@ -19,47 +895,45 @@
         <span class="logo-text">NEXUS</span>
       </div>
       <div class="nav-links">
-        <a href="#features" class="nav-link">Recursos</a>
-        <a href="#performance" class="nav-link">Performance</a>
-        <a href="#contact" class="nav-link">Contato</a>
-        <button class="demo-btn">Demonstração</button>
+        <a href="#problems" class="nav-link">Problemas</a>
+        <a href="#features" class="nav-link">Funcionalidades</a>
+        <a href="#demo" class="nav-link">Demo</a>
+        <a href="#pricing" class="nav-link">Planos</a>
+        <button class="demo-btn" onclick="openDemo()">Teste Grátis</button>
       </div>
     </div>
   </nav>
 
+  <!-- Hero Section -->
   <section class="section hero">
     <div class="hero-content">
       <div class="badge">
-        <span class="badge-text">TECNOLOGIA AVANÇADA</span>
+        <span class="badge-text">IA AVANÇADA PARA SOCIAL MEDIA</span>
       </div>
       <h1 class="hero-title">
-        <span class="title-line">Investimento</span>
-        <span class="title-line highlight">Guiado por Dados</span>
+        <span class="title-line">Transforme dados em</span>
+        <span class="title-line highlight">estratégias vencedoras</span>
       </h1>
-      <p class="hero-subtitle">Decisões sólidas. Tecnologia visionária. Resultados mensuráveis.</p>
+      <p class="hero-subtitle">
+        Nexus analisa seus perfis nas redes sociais e propõe estratégias inteligentes de engajamento. 
+        Não é só postar, é postar com propósito e impacto.
+      </p>
       <div class="cta-container">
-        <button class="cta-primary">
-          <i class="fas fa-chart-line"></i>
+        <button class="cta-primary" onclick="openDemo()">
+          <i class="fas fa-rocket"></i>
           Começar Agora
         </button>
-        <button class="cta-secondary">
+        <button class="cta-secondary" onclick="scrollToSection('features')">
           <i class="fas fa-play-circle"></i>
-          Ver Vídeo
+          Ver Funcionalidades
         </button>
       </div>
-      <div class="stats-container">
-        <div class="stat">
-          <span class="stat-number" data-target="99.7">0.0</span><span class="stat-percent">%</span>
-          <span class="stat-label">Precisão</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number" data-target="24">0</span><span class="stat-symbol">/7</span>
-          <span class="stat-label">Monitoramento</span>
-        </div>
-        <div class="stat">
-          <span class="stat-number" data-target="2.5">0</span><span class="stat-symbol">k+</span>
-          <span class="stat-label">Clientes</span>
-        </div>
+      <div class="platform-icons">
+        <i class="fab fa-instagram platform-icon"></i>
+        <i class="fab fa-twitter platform-icon"></i>
+        <i class="fab fa-tiktok platform-icon"></i>
+        <i class="fab fa-linkedin platform-icon"></i>
+        <i class="fab fa-youtube platform-icon"></i>
       </div>
     </div>
     <div class="scroll-indicator">
@@ -69,120 +943,318 @@
     </div>
   </section>
 
-  <section id="features" class="section feature-section">
+  <!-- Problems Section -->
+  <section id="problems" class="section problems-section">
     <div class="section-header">
-      <h2 class="section-title">
-        <span class="section-subtitle">VISUALIZAÇÃO INTELIGENTE</span>
-        Transformamos números em clareza estratégica
-      </h2>
-      <p class="section-description">Análises preditivas e visualização 3D interativa para tomada de decisão informada.</p>
+      <span class="section-subtitle">PROBLEMAS QUE RESOLVEMOS</span>
+      <h2 class="section-title">Chega de postar no escuro</h2>
+      <p class="section-description">
+        Muitas marcas e criadores perdem tempo e oportunidades por falta de estratégia clara. 
+        O Nexus transforma essa realidade.
+      </p>
     </div>
     
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="fas fa-brain"></i>
+    <div class="problems-grid">
+      <div class="problem-card">
+        <div class="problem-icon">
+          <i class="fas fa-chart-line"></i>
         </div>
-        <h3>IA Preditiva</h3>
-        <p>Algoritmos de machine learning que antecipam tendências de mercado com precisão superior.</p>
-        <div class="feature-tags">
-          <span class="tag">Tempo Real</span>
-          <span class="tag">Aprendizado</span>
+        <h3>Falta de estratégia clara</h3>
+        <p>Publicação sem análise de desempenho ou direção definida, resultando em resultados inconsistentes.</p>
+      </div>
+      
+      <div class="problem-card">
+        <div class="problem-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <h3>Público desconhecido</h3>
+        <p>Dificuldade em compreender quem realmente interage com seu conteúdo e porquê.</p>
+      </div>
+      
+      <div class="problem-card">
+        <div class="problem-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <h3>Conteúdo ineficiente</h3>
+        <p>Tempo gasto criando posts sem saber o que realmente funciona para seu nicho.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="section features-section">
+    <div class="section-header">
+      <span class="section-subtitle">FUNCIONALIDADES PRINCIPAIS</span>
+      <h2 class="section-title">Seu copiloto digital inteligente</h2>
+      <p class="section-description">
+        Tecnologia avançada que transforma dados brutos em ações estratégicas.
+      </p>
+    </div>
+    
+    <div class="features-tabs">
+      <button class="feature-tab active" onclick="showFeature('analysis')">Análise de Perfil</button>
+      <button class="feature-tab" onclick="showFeature('audience')">Inteligência de Público</button>
+      <button class="feature-tab" onclick="showFeature('engagement')">Propostas de Engajamento</button>
+      <button class="feature-tab" onclick="showFeature('creation')">Criação Assistida</button>
+    </div>
+    
+    <div class="feature-content">
+      <div id="analysis-content" class="feature-content-active">
+        <h3>Análise Profunda do Seu Perfil</h3>
+        <p>Identificamos seu tipo de conta, nicho, público-alvo e padrões de engajamento.</p>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <i class="fas fa-user-tag"></i>
+            <div>
+              <h4>Tipo de Conta</h4>
+              <p>Detecção automática (pessoal, empresarial, criador)</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-chart-bar"></i>
+            <div>
+              <h4>Performance Histórica</h4>
+              <p>Análise de todos os posts e stories anteriores</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-bullseye"></i>
+            <div>
+              <h4>Nicho Específico</h4>
+              <p>Identificação precisa do seu mercado</p>
+            </div>
+          </div>
         </div>
       </div>
       
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="fas fa-chart-network"></i>
-        </div>
-        <h3>Análise 3D</h3>
-        <p>Visualize múltiplas dimensões de dados simultaneamente em modelos espaciais interativos.</p>
-        <div class="feature-tags">
-          <span class="tag">Interativo</span>
-          <span class="tag">Multidimensional</span>
-        </div>
-      </div>
-      
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="fas fa-shield-alt"></i>
-        </div>
-        <h3>Segurança Blockchain</h3>
-        <p>Tecnologia distribuída para proteção máxima de dados e transparência auditável.</p>
-        <div class="feature-tags">
-          <span class="tag">Imutável</span>
-          <span class="tag">Transparente</span>
+      <div id="audience-content" class="feature-content-hidden">
+        <h3>Conheça Seu Público como Nunca</h3>
+        <p>Análise demográfica, geográfica e comportamental dos seus seguidores.</p>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <h4>Segmentação Geográfica</h4>
+              <p>De onde vêm seus engajamentos</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-clock"></i>
+            <div>
+              <h4>Horários Ideais</h4>
+              <p>Quando seu público está mais ativo</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-heart"></i>
+            <div>
+              <h4>Emoções Dominantes</h4>
+              <p>Sentimentos das interações</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="performance" class="section performance-section">
-    <div class="performance-container">
-      <div class="performance-content">
-        <h2 class="performance-title">
-          <span class="highlight">Performance</span> & Confiança
-        </h2>
-        <p class="performance-text">Arquitetura moderna, decisões seguras e resultados consistentes.</p>
-        
-        <div class="performance-metrics">
-          <div class="metric">
-            <div class="metric-bar-container">
-              <div class="metric-bar" data-percent="95"></div>
-            </div>
-            <div class="metric-info">
-              <span>Retorno Anual</span>
-              <span>95%</span>
-            </div>
-          </div>
-          
-          <div class="metric">
-            <div class="metric-bar-container">
-              <div class="metric-bar" data-percent="99"></div>
-            </div>
-            <div class="metric-info">
-              <span>Uptime Sistema</span>
-              <span>99.9%</span>
-            </div>
-          </div>
-          
-          <div class="metric">
-            <div class="metric-bar-container">
-              <div class="metric-bar" data-percent="87"></div>
-            </div>
-            <div class="metric-info">
-              <span>Redução de Risco</span>
-              <span>87%</span>
-            </div>
-          </div>
+  <!-- Demo Section -->
+  <section id="demo" class="section demo-section">
+    <div class="section-header">
+      <span class="section-subtitle">EXPERIMENTE AGORA</span>
+      <h2 class="section-title">Veja o Nexus em ação</h2>
+      <p class="section-description">
+        Simule uma análise do seu perfil e receba recomendações personalizadas.
+      </p>
+    </div>
+    
+    <div class="demo-container">
+      <div class="demo-form">
+        <div class="form-group">
+          <select id="profileType">
+            <option value="">Tipo de Perfil</option>
+            <option value="personal">Pessoal</option>
+            <option value="business">Empresarial</option>
+            <option value="creator">Criador de Conteúdo</option>
+          </select>
+          <select id="socialPlatform">
+            <option value="">Plataforma Principal</option>
+            <option value="instagram">Instagram</option>
+            <option value="twitter">Twitter</option>
+            <option value="tiktok">TikTok</option>
+            <option value="linkedin">LinkedIn</option>
+          </select>
         </div>
-        
-        <button class="performance-cta">
-          <i class="fas fa-file-alt"></i>
-          Relatório Completo
+        <div class="form-group">
+          <input type="text" id="niche" placeholder="Seu nicho (ex: tecnologia, moda, fitness)">
+          <input type="number" id="followers" placeholder="Nº aproximado de seguidores">
+        </div>
+        <button class="analyze-btn" onclick="analyzeProfile()">
+          <i class="fas fa-magic"></i>
+          Analisar Meu Perfil
         </button>
       </div>
-    </div>
-  </section>
-
-  <section id="contact" class="section cta-section">
-    <div class="cta-content">
-      <h2 class="cta-title">Pronto para transformar seus investimentos?</h2>
-      <p class="cta-text">Junte-se a milhares de investidores que já utilizam nossa plataforma.</p>
       
-      <form class="cta-form">
-        <div class="form-group">
-          <input type="email" placeholder="Seu melhor e-mail" required>
-          <button type="submit" class="form-submit">
-            <i class="fas fa-paper-plane"></i>
-            Começar
-          </button>
+      <div id="demoResult" class="demo-result">
+        <div class="result-header">
+          <h3>Análise do Seu Perfil</h3>
+          <div class="profile-score">86%</div>
         </div>
-        <p class="form-note">Teste grátis por 30 dias. Não requer cartão de crédito.</p>
-      </form>
+        <p>Baseado nas informações fornecidas, aqui estão nossas recomendações:</p>
+        
+        <div class="result-grid">
+          <div class="result-item">
+            <h4>🕒 Melhor Horário</h4>
+            <p>19:00 - 21:00</p>
+            <small>Pico de engajamento do seu público</small>
+          </div>
+          <div class="result-item">
+            <h4>📈 Frequência Ideal</h4>
+            <p>5-7 posts/semana</p>
+            <small>Manter consistência sem saturar</small>
+          </div>
+          <div class="result-item">
+            <h4>🎯 Tipo de Conteúdo</h4>
+            <p>Vídeos Curtos + Carrosséis</p>
+            <small>Maior taxa de engajamento</small>
+          </div>
+          <div class="result-item">
+            <h4>💬 Tom de Voz</h4>
+            <p>Informativo + Inspiracional</p>
+            <small>Responde ao perfil do seu público</small>
+          </div>
+        </div>
+        
+        <h4 style="margin-top: 2rem;">📋 Sugestões de Ação Imediata:</h4>
+        <ul class="suggestions-list">
+          <li><i class="fas fa-check-circle"></i> Criar 3 vídeos curtos por semana sobre tendências do seu nicho</li>
+          <li><i class="fas fa-check-circle"></i> Usar hashtags específicas para aumentar alcance orgânico</li>
+          <li><i class="fas fa-check-circle"></i> Responder comentários nas primeiras 2 horas após publicação</li>
+          <li><i class="fas fa-check-circle"></i> Postar stories diários com perguntas para aumentar interação</li>
+        </ul>
+      </div>
     </div>
   </section>
 
+  <!-- Pricing Section -->
+  <section id="pricing" class="section pricing-section">
+    <div class="section-header">
+      <span class="section-subtitle">PLANOS E PREÇOS</span>
+      <h2 class="section-title">Invista no crescimento da sua presença digital</h2>
+      <p class="section-description">
+        Escolha o plano ideal para suas necessidades. Todos incluem diagnóstico gratuito.
+      </p>
+    </div>
+    
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3 class="pricing-name">Free</h3>
+          <div class="pricing-price">R$0</div>
+          <p>/mês</p>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> Análise básica de perfil</li>
+          <li><i class="fas fa-check"></i> 5 sugestões semanais</li>
+          <li><i class="fas fa-check"></i> Métricas essenciais</li>
+          <li><i class="fas fa-times"></i> Criação de conteúdo</li>
+          <li><i class="fas fa-times"></i> Planejamento mensal</li>
+        </ul>
+        <button class="pricing-btn" onclick="openDemo()">Começar Grátis</button>
+      </div>
+      
+      <div class="pricing-card popular">
+        <div class="popular-badge">MAIS POPULAR</div>
+        <div class="pricing-header">
+          <h3 class="pricing-name">Premium</h3>
+          <div class="pricing-price">R$97</div>
+          <p>/mês</p>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> Análise completa de perfil</li>
+          <li><i class="fas fa-check"></i> Sugestões ilimitadas</li>
+          <li><i class="fas fa-check"></i> Criação de conteúdo assistida</li>
+          <li><i class="fas fa-check"></i> Planejamento mensal</li>
+          <li><i class="fas fa-check"></i> Alertas de performance</li>
+        </ul>
+        <button class="pricing-btn" onclick="selectPlan('premium')">Escolher Plano</button>
+      </div>
+      
+      <div class="pricing-card">
+        <div class="pricing-header">
+          <h3 class="pricing-name">Enterprise</h3>
+          <div class="pricing-price">R$297</div>
+          <p>/mês</p>
+        </div>
+        <ul class="pricing-features">
+          <li><i class="fas fa-check"></i> Todas as features Premium</li>
+          <li><i class="fas fa-check"></i> Múltiplas marcas</li>
+          <li><i class="fas fa-check"></i> Equipes colaborativas</li>
+          <li><i class="fas fa-check"></i> Relatórios avançados</li>
+          <li><i class="fas fa-check"></i> Suporte prioritário</li>
+        </ul>
+        <button class="pricing-btn" onclick="selectPlan('enterprise')">Falar com Vendas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap Section -->
+  <section class="section roadmap-section">
+    <div class="section-header">
+      <span class="section-subtitle">NOSSO PLANO</span>
+      <h2 class="section-title">Roadmap de Desenvolvimento</h2>
+      <p class="section-description">
+        Veja onde estamos e para onde vamos com o Nexus.
+      </p>
+    </div>
+    
+    <div class="roadmap-timeline">
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-number">FASE 1 - MVP</span>
+          <h3>Conectar & Diagnosticar</h3>
+          <p>Conexão com redes sociais, diagnóstico básico e sugestões semanais.</p>
+          <div class="phase-status">
+            <span style="color: var(--success);"><i class="fas fa-check-circle"></i> Concluído</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-number">FASE 2 - GROWTH</span>
+          <h3>Criação & Planejamento</h3>
+          <p>Criação de conteúdo assistida, planejamento mensal e alertas inteligentes.</p>
+          <div class="phase-status">
+            <span style="color: var(--warning);"><i class="fas fa-spinner"></i> Em Desenvolvimento</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-number">FASE 3 - AUTOMAÇÃO</span>
+          <h3>Automação & Competição</h3>
+          <p>Postagens automáticas e comparação com concorrentes.</p>
+          <div class="phase-status">
+            <span style="color: var(--accent);"><i class="fas fa-clock"></i> Planejado</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="roadmap-item">
+        <div class="roadmap-phase">
+          <span class="phase-number">FASE 4 - IA AVANÇADA</span>
+          <h3>Previsão & Personalização</h3>
+          <p>Previsão de tendências e personalização completa da estratégia.</p>
+          <div class="phase-status">
+            <span style="color: var(--accent);"><i class="fas fa-clock"></i> Futuro</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-logo">
@@ -192,14 +1264,182 @@
       <div class="footer-links">
         <a href="#"><i class="fab fa-twitter"></i></a>
         <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
         <a href="#"><i class="fab fa-github"></i></a>
       </div>
-      <p class="footer-copyright">© 2024 Nexus Analytics. Todos os direitos reservados.</p>
+      <p class="footer-copyright">© 2024 Nexus Analytics. Transformando dados em estratégias vencedoras.</p>
     </div>
   </footer>
 
-  <canvas id="webgl"></canvas>
+  <script>
+    // Custom cursor
+    const cursor = document.querySelector('.cursor')
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px'
+      cursor.style.top = e.clientY + 'px'
+    })
 
-  <script type="module" src="./src/js/main.js"></script>
+    // Add hover effect to interactive elements
+    const interactiveElements = document.querySelectorAll('button, a, .problem-card, .feature-tab, .pricing-card')
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'))
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'))
+    })
+
+    // Feature tabs functionality
+    function showFeature(feature) {
+      // Update tabs
+      document.querySelectorAll('.feature-tab').forEach(tab => tab.classList.remove('active'))
+      event.target.classList.add('active')
+      
+      // Update content
+      document.getElementById('analysis-content').style.display = 'none'
+      document.getElementById('audience-content').style.display = 'none'
+      
+      // Show selected content
+      if (feature === 'analysis') {
+        document.getElementById('analysis-content').style.display = 'block'
+      } else if (feature === 'audience') {
+        document.getElementById('audience-content').style.display = 'block'
+      }
+    }
+
+    // Demo analysis functionality
+    function analyzeProfile() {
+      const profileType = document.getElementById('profileType').value
+      const platform = document.getElementById('socialPlatform').value
+      const niche = document.getElementById('niche').value
+      const followers = document.getElementById('followers').value
+      
+      if (!profileType || !platform || !niche || !followers) {
+        alert('Por favor, preencha todos os campos para a análise.')
+        return
+      }
+      
+      // Show loading state
+      const button = document.querySelector('.analyze-btn')
+      const originalText = button.innerHTML
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analisando...'
+      button.disabled = true
+      
+      // Simulate API call
+      setTimeout(() => {
+        // Update result based on inputs
+        const score = calculateScore(profileType, platform, niche, followers)
+        document.querySelector('.profile-score').textContent = score + '%'
+        
+        // Show recommendations
+        const recommendations = generateRecommendations(profileType, platform, niche)
+        updateRecommendations(recommendations)
+        
+        // Show result
+        document.getElementById('demoResult').style.display = 'block'
+        
+        // Scroll to result
+        document.getElementById('demoResult').scrollIntoView({ behavior: 'smooth' })
+        
+        // Reset button
+        button.innerHTML = originalText
+        button.disabled = false
+      }, 1500)
+    }
+
+    function calculateScore(type, platform, niche, followers) {
+      let score = 70
+      if (type === 'business') score += 10
+      if (type === 'creator') score += 5
+      if (platform === 'instagram') score += 8
+      if (platform === 'tiktok') score += 12
+      if (followers > 10000) score += 7
+      return Math.min(score, 95)
+    }
+
+    function generateRecommendations(type, platform, niche) {
+      const niches = {
+        'tecnologia': { 
+          horario: '19:00 - 22:00', 
+          frequencia: '4-6 posts/semana',
+          tipoConteudo: 'Tutoriais + Notícias',
+          tomVoz: 'Técnico + Inovador'
+        },
+        'moda': {
+          horario: '17:00 - 20:00',
+          frequencia: '6-8 posts/semana',
+          tipoConteudo: 'Looks + Tendências',
+          tomVoz: 'Inspirador + Elegante'
+        },
+        'fitness': {
+          horario: '06:00 - 08:00 & 18:00 - 20:00',
+          frequencia: '5-7 posts/semana',
+          tipoConteudo: 'Treinos + Alimentação',
+          tomVoz: 'Motivacional + Educativo'
+        }
+      }
+      
+      const defaultRec = {
+        horario: '18:00 - 21:00',
+        frequencia: '5-7 posts/semana',
+        tipoConteudo: 'Vídeos Curtos + Carrosséis',
+        tomVoz: 'Informativo + Engajador'
+      }
+      
+      return niches[niche.toLowerCase()] || defaultRec
+    }
+
+    function updateRecommendations(rec) {
+      document.querySelectorAll('.result-item')[0].querySelector('p').textContent = rec.horario
+      document.querySelectorAll('.result-item')[1].querySelector('p').textContent = rec.frequencia
+      document.querySelectorAll('.result-item')[2].querySelector('p').textContent = rec.tipoConteudo
+      document.querySelectorAll('.result-item')[3].querySelector('p').textContent = rec.tomVoz
+    }
+
+    // Plan selection
+    function selectPlan(plan) {
+      const plans = {
+        'premium': 'Premium - R$97/mês',
+        'enterprise': 'Enterprise - R$297/mês'
+      }
+      
+      alert(`Ótima escolha! Você selecionou o plano ${plans[plan]}. Em uma implementação real, você seria redirecionado para o checkout.`)
+    }
+
+    function openDemo() {
+      document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })
+    }
+
+    function scrollToSection(sectionId) {
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' })
+    }
+
+    // Animate elements on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1'
+          entry.target.style.transform = 'translateY(0)'
+        }
+      })
+    }, observerOptions)
+
+    // Observe all cards and sections
+    document.querySelectorAll('.problem-card, .pricing-card, .roadmap-phase').forEach(el => {
+      el.style.opacity = '0'
+      el.style.transform = 'translateY(20px)'
+      el.style.transition = 'opacity 0.5s, transform 0.5s'
+      observer.observe(el)
+    })
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set initial state for features
+      document.getElementById('analysis-content').style.display = 'block'
+      document.getElementById('audience-content').style.display = 'none'
+    })
+  </script>
 </body>
 </html>
