@@ -1,6 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import express from 'express';
+import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -11,6 +14,8 @@ import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import serviceRoutes from './routes/services.js';
 import appointmentRoutes from './routes/appointments.js';
+import providerRoutes from './routes/providers.js';
+
 
 dotenv.config();
 
@@ -26,9 +31,11 @@ const io = new Server(server, {
 // Disponibilizar io para rotas
 app.set('io', io);
 
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Rate limiting básico para proteger rotas públicas
 const limiter = rateLimit({
@@ -77,9 +84,9 @@ connectDatabase();
 // Rotas
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/providers', userRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/providers', providerRoutes);
 
 // WebSocket para monitoramento em tempo real
 io.on('connection', (socket) => {

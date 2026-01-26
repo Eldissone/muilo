@@ -5,50 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Muilo</title>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    
-    <!-- Tailwind Configuration -->
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#13ec5b",
-                        "primary-dark": "#11d852",
-                        "background-light": "#f6f8f6",
-                        "background-dark": "#102216",
-                        "surface-dark": "#1A2E22",
-                        "surface-light": "#ffffff",
-                        "text-dark": "#1a2e22",
-                        "text-light": "#f6f8f6",
-                        "status-pending": "#f59e0b",
-                        "status-confirmed": "#3b82f6",
-                        "status-inprogress": "#10b981",
-                        "status-completed": "#8b5cf6"
-                    },
-                    fontFamily: {
-                        "display": ["Lexend", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.75rem",
-                        "lg": "1rem",
-                        "xl": "1.25rem",
-                        "2xl": "1.5rem"
-                    }
-                },
-            },
-        }
-    </script>
+    <link rel="stylesheet" href="/src/styles/main.css">
     
     <style>
         body {
@@ -121,9 +80,6 @@
             <!-- Logo -->
             <div class="p-6">
                 <a href="/index.html" class="flex items-center gap-3">
-                    <div class="bg-primary/10 p-3 rounded-xl">
-                        <span class="material-symbols-outlined text-primary text-2xl">local_hospital</span>
-                    </div>
                     <span class="text-xl font-bold text-text-dark dark:text-white">Muilo</span>
                 </a>
             </div>
@@ -149,37 +105,37 @@
             <!-- Navigation -->
             <nav class="flex-1 p-4">
                 <div class="space-y-1">
-                    <a href="#overview" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 active">
+                    <a href="/src/pages/dashboard.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 active">
                         <span class="material-symbols-outlined">dashboard</span>
                         <span>Visão Geral</span>
                     </a>
                     
-                    <a href="#appointments" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                    <a href="/src/pages/appointments.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                         <span class="material-symbols-outlined">calendar_month</span>
                         <span>Meus Agendamentos</span>
                     </a>
                     
-                    <a href="#history" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                    <a href="/src/pages/historical.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                         <span class="material-symbols-outlined">history</span>
                         <span>Histórico</span>
                     </a>
                     
-                    <a href="#profile" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                    <a href="/src/pages/profile.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                         <span class="material-symbols-outlined">person</span>
                         <span>Meu Perfil</span>
                     </a>
                     
-                    <a href="#health" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                    <a href="/src/pages/dashboard.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                         <span class="material-symbols-outlined">monitor_heart</span>
                         <span>Saúde</span>
                     </a>
                     
-                    <a href="#documents" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                    <a href="/src/pages/dashboard.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                         <span class="material-symbols-outlined">folder</span>
                         <span>Documentos</span>
                     </a>
                     
-                    <a href="#support" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                    <a href="/src/pages/dashboard.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                         <span class="material-symbols-outlined">support_agent</span>
                         <span>Suporte</span>
                     </a>
@@ -221,9 +177,6 @@
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-8">
                             <a href="/index.html" class="flex items-center gap-3">
-                                <div class="bg-primary/10 p-3 rounded-xl">
-                                    <span class="material-symbols-outlined text-primary text-2xl">local_hospital</span>
-                                </div>
                                 <span class="text-xl font-bold text-text-dark dark:text-white">Muilo</span>
                             </a>
                             <button id="closeMobileMenu" class="text-gray-600 dark:text-gray-300">
@@ -233,22 +186,22 @@
                         
                         <!-- Mobile Navigation -->
                         <nav class="space-y-1">
-                            <a href="#overview" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 active">
+                            <a href="/src/pages/dashboard.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 active">
                                 <span class="material-symbols-outlined">dashboard</span>
                                 <span>Visão Geral</span>
                             </a>
                             
-                            <a href="#appointments" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                            <a href="/src/pages/appointments.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                                 <span class="material-symbols-outlined">calendar_month</span>
                                 <span>Meus Agendamentos</span>
                             </a>
                             
-                            <a href="#history" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                            <a href="/src/pages/historical.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                                 <span class="material-symbols-outlined">history</span>
                                 <span>Histórico</span>
                             </a>
                             
-                            <a href="#profile" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
+                            <a href="/src/pages/profile.html" class="sidebar-link flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5">
                                 <span class="material-symbols-outlined">person</span>
                                 <span>Meu Perfil</span>
                             </a>
@@ -329,7 +282,7 @@
                             <h2 class="text-xl font-bold text-text-dark dark:text-white">
                                 Agendamentos Recentes
                             </h2>
-                            <a href="#appointments" class="text-primary hover:text-primary-dark font-medium text-sm flex items-center gap-1">
+                            <a href="/src/pages/appointments.html" class="text-primary hover:text-primary-dark font-medium text-sm flex items-center gap-1">
                                 Ver todos
                                 <span class="material-symbols-outlined text-sm">chevron_right</span>
                             </a>
@@ -535,313 +488,37 @@
     </nav>
 
     <!-- JavaScript -->
-    <script type="module">
-        // Mobile menu functionality
-        const mobileMenuButton = document.getElementById('mobileMenuButton');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
-        const mobileSidebar = document.getElementById('mobileSidebar');
-        
-        mobileMenuButton.addEventListener('click', () => {
-            mobileSidebar.classList.remove('hidden');
+    <script>
+      const mobileMenuButton = document.getElementById('mobileMenuButton');
+      const closeMobileMenu = document.getElementById('closeMobileMenu');
+      const mobileSidebar = document.getElementById('mobileSidebar');
+      if (mobileMenuButton && mobileSidebar) {
+        mobileMenuButton.addEventListener('click', () => mobileSidebar.classList.remove('hidden'));
+      }
+      if (closeMobileMenu && mobileSidebar) {
+        closeMobileMenu.addEventListener('click', () => mobileSidebar.classList.add('hidden'));
+      }
+      if (mobileSidebar) {
+        mobileSidebar.addEventListener('click', (e) => { if (e.target === mobileSidebar) mobileSidebar.classList.add('hidden'); });
+      }
+      const navLinks = document.querySelectorAll('.sidebar-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          if (!this.getAttribute('href').startsWith('#')) return;
+          e.preventDefault();
+          navLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+          if (mobileSidebar) mobileSidebar.classList.add('hidden');
         });
-        
-        closeMobileMenu.addEventListener('click', () => {
-            mobileSidebar.classList.add('hidden');
-        });
-        
-        mobileSidebar.addEventListener('click', (e) => {
-            if (e.target === mobileSidebar) {
-                mobileSidebar.classList.add('hidden');
-            }
-        });
-        
-        // Navigation active state
-        const navLinks = document.querySelectorAll('.sidebar-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (!this.getAttribute('href').startsWith('#')) {
-                    return; // Allow external links
-                }
-                
-                e.preventDefault();
-                navLinks.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Close mobile menu if open
-                mobileSidebar.classList.add('hidden');
-            });
-        });
-        
-        // Mock data for appointments
-        const mockAppointments = [
-            {
-                id: 1,
-                service: "Consulta Cardiológica",
-                provider: "Dr. Roberto Silva",
-                date: "Hoje, 14:00",
-                status: "confirmed",
-                type: "virtual",
-                address: "Teleconsulta",
-                notes: "Levar exames recentes"
-            },
-            {
-                id: 2,
-                service: "Exames de Sangue",
-                provider: "Lab. Saúde Total",
-                date: "Amanhã, 09:00",
-                status: "pending",
-                type: "home",
-                address: "Av. Paulista, 1000",
-                notes: "Jejum de 12 horas"
-            },
-            {
-                id: 3,
-                service: "Fisioterapia",
-                provider: "Roberto Mendes",
-                date: "Quarta, 16:30",
-                status: "confirmed",
-                type: "clinic",
-                address: "R. Augusta, 500",
-                notes: "Trazer radiografia"
-            },
-            {
-                id: 4,
-                service: "Consulta Dermatológica",
-                provider: "Dra. Ana Souza",
-                date: "12/12, 10:00",
-                status: "pending",
-                type: "virtual",
-                address: "Teleconsulta",
-                notes: "Fotografar lesões"
-            },
-            {
-                id: 5,
-                service: "Acompanhamento Nutricional",
-                provider: "Dra. Carla Santos",
-                date: "10/12, 15:00",
-                status: "completed",
-                type: "virtual",
-                address: "Teleconsulta",
-                notes: "Relatório alimentar"
-            }
-        ];
-        
-        // Load dashboard data
-        document.addEventListener('DOMContentLoaded', () => {
-            loadUserData();
-            loadAppointments();
-            updateStats();
-        });
-        
-        function loadUserData() {
-            // Get user from localStorage
-            const userStr = localStorage.getItem('user');
-            if (userStr) {
-                try {
-                    const user = JSON.parse(userStr);
-                    document.getElementById('userName').textContent = user.name;
-                    document.getElementById('userNameMobile').textContent = user.name.split(' ')[0];
-                } catch (e) {
-                    console.error('Error parsing user data:', e);
-                }
-            }
+      });
+      window.logout = function() {
+        if (confirm('Deseja realmente sair?')) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/index.html';
         }
-        
-        function loadAppointments() {
-            const container = document.getElementById('appointments-container');
-            const loading = document.getElementById('appointments-loading');
-            const empty = document.getElementById('appointments-empty');
-            
-            // Simulate API delay
-            setTimeout(() => {
-                loading.style.display = 'none';
-                
-                if (mockAppointments.length === 0) {
-                    empty.classList.remove('hidden');
-                    return;
-                }
-                
-                container.innerHTML = mockAppointments.map(apt => `
-                    <div class="appointment-card bg-white dark:bg-surface-dark rounded-xl p-5 border border-gray-100 dark:border-white/5 hover:shadow-lg transition-all">
-                        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                            <div class="flex-1">
-                                <div class="flex items-start gap-3">
-                                    <div class="w-10 h-10 rounded-lg ${getStatusColor(apt.status)} flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-white">
-                                            ${getStatusIcon(apt.status)}
-                                        </span>
-                                    </div>
-                                    <div class="flex-1">
-                                        <h4 class="font-bold text-text-dark dark:text-white mb-1">
-                                            ${apt.service}
-                                        </h4>
-                                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                                            ${apt.provider}
-                                        </p>
-                                        <div class="flex flex-wrap gap-4">
-                                            <div class="flex items-center gap-2 text-sm">
-                                                <span class="material-symbols-outlined text-gray-400">schedule</span>
-                                                <span class="text-gray-700 dark:text-gray-300">${apt.date}</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-sm">
-                                                <span class="material-symbols-outlined text-gray-400">location_on</span>
-                                                <span class="text-gray-700 dark:text-gray-300">${apt.address}</span>
-                                            </div>
-                                        </div>
-                                        ${apt.notes ? `
-                                            <div class="mt-3 p-3 bg-gray-50 dark:bg-white/5 rounded-lg">
-                                                <p class="text-sm text-gray-600 dark:text-gray-300">
-                                                    <span class="font-medium">Observação:</span> ${apt.notes}
-                                                </p>
-                                            </div>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex flex-col gap-2 sm:w-32">
-                                <span class="inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold ${getStatusBadgeClass(apt.status)}">
-                                    ${getStatusText(apt.status)}
-                                </span>
-                                
-                                <div class="flex gap-2">
-                                    ${apt.status === 'confirmed' ? `
-                                        <button onclick="startChat(${apt.id})" class="flex-1 py-2 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg transition-colors">
-                                            Chat
-                                        </button>
-                                    ` : ''}
-                                    
-                                    ${apt.status === 'pending' ? `
-                                        <button onclick="cancelAppointment(${apt.id})" class="flex-1 py-2 bg-red-100 dark:bg-red-900/20 hover:bg-red-200 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 text-sm font-medium rounded-lg transition-colors">
-                                            Cancelar
-                                        </button>
-                                    ` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }, 1000);
-        }
-        
-        function updateStats() {
-            const counts = {
-                pending: mockAppointments.filter(a => a.status === 'pending').length,
-                confirmed: mockAppointments.filter(a => a.status === 'confirmed').length,
-                inprogress: mockAppointments.filter(a => a.status === 'inprogress').length,
-                completed: mockAppointments.filter(a => a.status === 'completed').length
-            };
-            
-            document.getElementById('count-pending').textContent = counts.pending;
-            document.getElementById('count-confirmed').textContent = counts.confirmed;
-            document.getElementById('count-inprogress').textContent = counts.inprogress;
-            document.getElementById('count-completed').textContent = counts.completed;
-        }
-        
-        function getStatusColor(status) {
-            switch(status) {
-                case 'pending': return 'bg-status-pending';
-                case 'confirmed': return 'bg-status-confirmed';
-                case 'inprogress': return 'bg-status-inprogress';
-                case 'completed': return 'bg-status-completed';
-                default: return 'bg-gray-500';
-            }
-        }
-        
-        function getStatusIcon(status) {
-            switch(status) {
-                case 'pending': return 'schedule';
-                case 'confirmed': return 'check_circle';
-                case 'inprogress': return 'play_circle';
-                case 'completed': return 'done_all';
-                default: return 'help';
-            }
-        }
-        
-        function getStatusBadgeClass(status) {
-            switch(status) {
-                case 'pending': return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
-                case 'confirmed': return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300';
-                case 'inprogress': return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
-                case 'completed': return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300';
-                default: return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300';
-            }
-        }
-        
-        function getStatusText(status) {
-            const statusMap = {
-                'pending': 'Pendente',
-                'confirmed': 'Confirmado',
-                'inprogress': 'Em Andamento',
-                'completed': 'Concluído',
-                'cancelled': 'Cancelado'
-            };
-            return statusMap[status] || status;
-        }
-        
-        // Action functions
-        function newAppointment() {
-            window.location.href = 'search.html';
-        }
-        
-        function cancelAppointment(appointmentId) {
-            if (confirm('Tem certeza que deseja cancelar este agendamento?')) {
-                // Here you would make an API call to cancel the appointment
-                alert('Agendamento cancelado com sucesso!');
-                // Reload appointments
-                loadAppointments();
-                updateStats();
-            }
-        }
-        
-        function startChat(appointmentId) {
-            window.location.href = `chat.html?appointment=${appointmentId}`;
-        }
-        
-        function joinVirtualRoom() {
-            alert('Conectando à sala virtual...');
-            // In a real app, this would connect to a video call
-        }
-        
-        function viewDocuments() {
-            window.location.href = 'documents.html';
-        }
-        
-        function viewExams() {
-            window.location.href = 'exams.html';
-        }
-        
-        function viewMedications() {
-            window.location.href = 'medications.html';
-        }
-        
-        function contactSupport() {
-            window.location.href = 'support.html';
-        }
-        
-        function viewHealthDetails() {
-            window.location.href = 'health.html';
-        }
-        
-        function logout() {
-            if (confirm('Deseja realmente sair?')) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = 'index.html';
-            }
-        }
-        
-        // Make functions available globally
-        window.newAppointment = newAppointment;
-        window.cancelAppointment = cancelAppointment;
-        window.startChat = startChat;
-        window.joinVirtualRoom = joinVirtualRoom;
-        window.viewDocuments = viewDocuments;
-        window.viewExams = viewExams;
-        window.viewMedications = viewMedications;
-        window.contactSupport = contactSupport;
-        window.viewHealthDetails = viewHealthDetails;
-        window.logout = logout;
+      };
     </script>
+    <script type="module" src="/src/js/dashboardClient.js"></script>
 </body>
 </html>

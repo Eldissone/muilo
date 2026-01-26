@@ -4,47 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendar Serviço - Muilo</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    
-    <!-- Tailwind Configuration -->
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#13ec5b",
-                        "primary-dark": "#11d852",
-                        "background-light": "#f6f8f6",
-                        "background-dark": "#102216",
-                        "surface-dark": "#1A2E22",
-                        "surface-light": "#ffffff",
-                        "text-dark": "#1a2e22",
-                        "text-light": "#f6f8f6"
-                    },
-                    fontFamily: {
-                        "display": ["Lexend", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.75rem",
-                        "lg": "1rem",
-                        "xl": "1.25rem",
-                        "2xl": "1.5rem"
-                    }
-                },
-            },
-        }
-    </script>
+    <link rel="stylesheet" href="/src/styles/main.css">
     
     <style>
         body {
@@ -105,9 +65,6 @@
         <div class="container mx-auto px-6">
             <div class="flex items-center justify-between h-16">
                 <a href="/index.html" class="flex items-center gap-2">
-                    <div class="bg-primary/10 p-2 rounded-lg">
-                        <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
-                    </div>
                     <span class="text-lg font-bold text-text-dark dark:text-white">Muilo</span>
                 </a>
                 <div class="flex items-center gap-6">
@@ -163,9 +120,6 @@
                 <div class="flex items-center gap-3">
                  
                     <a href="index.html" class="flex items-center gap-2">
-                        <div class="p-2 rounded-lg">
-                            <span class="material-symbols-outlined text-primary">local_hospital</span>
-                        </div>
                         <span class="text-lg font-bold text-text-dark dark:text-white">Muilo</span>
                     </a>
                 </div>
@@ -520,6 +474,8 @@
             </div>
         </div>
     </main>
+
+    <div id="globalToast" class="pointer-events-none fixed inset-x-4 bottom-6 z-50 flex justify-center opacity-0 translate-y-4 transition-all duration-300"></div>
 
       <!-- Bottom Navigation mobile-->
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-white/5 py-3">
@@ -964,4 +920,6 @@
     </script>
     <script type="module" src="../js/booking.js"></script>
 </body>
+</html>
+
 </html>

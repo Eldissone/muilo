@@ -1,42 +1,202 @@
 <!DOCTYPE html>
-
 <html class="dark" lang="pt-BR">
-
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Perfil do Prestador</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-        rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#13ec5b",
-                        "background-light": "#f6f8f6",
-                        "background-dark": "#102216",
-                        "surface-dark": "#1c2e22", // Custom surface color for cards in dark mode
-                    },
-                    fontFamily: {
-                        "display": ["Lexend", "sans-serif"]
-                    },
-                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
-                },
-            },
-        }
-    </script>
+    <link rel="stylesheet" href="/src/styles/main.css">
     <style>
         body {
             min-height: max(884px, 100dvh);
+        }
+        
+        /* Estilos para o modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+   
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .dark .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .dark .modal-close {
+            color: #9ca3af;
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            background: #e5e7eb;
+        }
+        
+        .dark .progress-bar {
+            background: #374151;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        /* Upload de imagem */
+        .avatar-upload-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .avatar-edit-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .avatar-upload-container:hover .avatar-edit-overlay {
+            display: flex;
+        }
+        
+        /* Modal de upload */
+        .upload-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .upload-content {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+      
+        .upload-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background-size: cover;
+            background-position: center;
+            border: 3px solid var(--primary);
+        }
+        
+        .upload-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1002;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .dark .toast {
+            background: var(--surface-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .toast.info {
+            border-left: 4px solid #3b82f6;
         }
     </style>
 </head>
@@ -47,9 +207,6 @@
         <div class="container mx-auto px-6">
             <div class="flex items-center justify-between h-16">
                 <a href="/index.html" class="flex items-center gap-2">
-                    <div class="bg-primary/10 p-2 rounded-lg">
-                        <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
-                    </div>
                     <span class="text-lg font-bold text-text-dark dark:text-white">Muilo</span>
                 </a>
                 <div class="flex items-center gap-6">
@@ -70,280 +227,212 @@
             </div>
         </div>
     </nav>
-    <script>
-        (function(){
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user')||'{}');
-            const authEl = document.getElementById('headerAuth');
-            const userEl = document.getElementById('headerUser');
-            const nameEl = document.getElementById('headerUserName');
-            if (authEl && userEl) {
-                if (token) {
-                    authEl.classList.add('hidden');
-                    userEl.classList.remove('hidden');
-                    if (nameEl) nameEl.textContent = user?.name || 'Minha Conta';
-                } else {
-                    authEl.classList.remove('hidden');
-                    userEl.classList.add('hidden');
-                }
-            }
-            const logout = document.getElementById('headerLogout');
-            if (logout) {
-                logout.addEventListener('click', () => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('user');
-                    window.location.href = '/index.html';
-                });
-            }
-        })();
-    </script>
+    
     <!-- Top App Bar -->
-    <div
-        class="sticky top-0 z-50 flex items-center justify-between bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 border-b border-gray-200 dark:border-white/5 transition-colors">
- 
+    <div class="sticky top-0 z-50 flex items-center justify-between bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 border-b border-gray-200 dark:border-white/5 transition-colors">
         <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Perfil</h2>
-        <button
-            class="flex size-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors group">
-            <span class="material-symbols-outlined text-slate-400 group-hover:text-red-500 transition-colors"
-                style="font-size: 24px;">favorite</span>
+        <button class="flex size-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors group">
+            <span class="material-symbols-outlined text-slate-400 group-hover:text-red-500 transition-colors" style="font-size: 24px;">favorite</span>
         </button>
     </div>
+
     <!-- Profile Header -->
     <div class="flex flex-col items-center p-6 gap-4">
-        <div class="relative">
-            <div class="bg-center bg-no-repeat bg-cover rounded-full h-32 w-32 border-4 border-primary/20 shadow-xl shadow-primary/5"
-                data-alt="Portrait of a female nurse smiling professionally"
+        <div class="avatar-upload-container">
+            <div id="profileAvatar" class="bg-center bg-no-repeat bg-cover rounded-full h-32 w-32 border-4 border-primary/20 shadow-xl shadow-primary/5"
                 style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBxYq1uaj0ayx0M2J8RxIvFxS3QnF5CyJg93nyV-K-AnwinJR2qaUEB7jNrc9Edxn7rVdPZjmGMYv9-L4SFWhOMHDVh7zcnvVZma6Fno0G9Y4k859L3noWTrpVn0xalCz0G1lcI1dQu1BrDQ8dQX7AsrQCJGrCPV-0DrlXPbASIgurkYaEqxIE1KwmPsVovofi1gk7glvPnpxS_rmvYrU8Obpnzd5S_pq5jbuo2SstrP_lVWMT0LVL_dZT-C0WcCfxYolDQQLBBbyrm");'>
             </div>
-            <div class="absolute bottom-1 right-1 bg-background-dark rounded-full p-1 border border-primary/30">
-                <span class="material-symbols-outlined text-primary fill-1"
-                    style="font-size: 24px; font-variation-settings: 'FILL' 1;">verified</span>
+            <div class="avatar-edit-overlay" id="avatarEditOverlay">
+                <span class="material-symbols-outlined">photo_camera</span>
+            </div>
+            <div id="verifiedBadge" class="absolute bottom-1 left-1 bg-background-dark rounded-full p-1 border border-primary/30">
+                <span class="material-symbols-outlined text-primary fill-1" style="font-size: 20px; font-variation-settings: 'FILL' 1;">verified</span>
             </div>
         </div>
         <div class="text-center space-y-1">
-            <h1 class="text-2xl font-bold leading-tight">Dr. Ana Silva</h1>
-            <p class="text-primary font-medium text-base">Enfermeira Chefe</p>
+            <h1 id="profileName" class="text-2xl font-bold leading-tight">Carregando...</h1>
+            <p id="profileRole" class="text-primary font-medium text-base">Carregando...</p>
             <div class="flex items-center justify-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                <span class="flex items-center gap-1">
+                <span class="flex items-center gap-1" id="profileExperience">
                     <span class="material-symbols-outlined text-[16px]">work_history</span>
-                    5 anos de exp.
+                    <span id="experienceText">Carregando...</span>
                 </span>
                 <span class="w-1 h-1 rounded-full bg-slate-500"></span>
-                <span class="flex items-center gap-1">
+                <span class="flex items-center gap-1" id="profileLocation">
                     <span class="material-symbols-outlined text-[16px]">location_on</span>
-                    São Paulo, SP
+                    <span id="locationText">Carregando...</span>
                 </span>
             </div>
         </div>
+        <!-- Botão para abrir modal de dados -->
+        <button id="openProfileModalBtn" class="mt-4 px-5 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all">
+            Meus Dados
+        </button>
     </div>
+
+    <!-- Modal de Upload de Imagem -->
+    <div id="avatarUploadModal" class="upload-modal">
+        <div class="upload-content">
+            <h3 class="text-lg font-bold mb-4">Alterar Foto do Perfil</h3>
+            
+            <div id="avatarPreview" class="upload-preview"></div>
+            
+            <div class="mb-4">
+                <input type="file" id="avatarInput" accept="image/*" class="hidden" />
+                <label for="avatarInput" class="inline-flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl cursor-pointer transition-all">
+                    <span class="material-symbols-outlined">photo_library</span>
+                    Escolher Imagem
+                </label>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    Formatos suportados: JPG, PNG, GIF (máx. 5MB)
+                </p>
+            </div>
+            
+            <div class="upload-actions">
+                <button id="cancelAvatarUpload" class="px-4 py-2 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 font-semibold rounded-xl">
+                    Cancelar
+                </button>
+                <button id="saveAvatarUpload" class="px-4 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl flex items-center gap-2">
+                    <span id="saveAvatarText">Salvar Foto</span>
+                    <span id="avatarUploadLoading" class="loading-spinner hidden"></span>
+                </button>
+            </div>
+            
+            <div id="avatarUploadProgress" class="mt-4 hidden">
+                <div class="progress-bar">
+                    <div id="avatarProgressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+                <p id="avatarProgressText" class="text-sm text-gray-600 dark:text-gray-400 mt-1">0%</p>
+            </div>
+        </div>
+    </div>
+     
     <!-- Stats Row -->
     <div class="px-4">
         <div class="flex gap-3 justify-between">
-            <div
-                class="flex flex-1 flex-col items-center justify-center gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark border border-gray-100 dark:border-white/5 shadow-sm">
+            <div class="flex flex-1 flex-col items-center justify-center gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark border border-gray-100 dark:border-white/5 shadow-sm">
                 <div class="flex items-center gap-1 text-primary">
-                    <span class="text-xl font-bold">4.9</span>
-                    <span class="material-symbols-outlined text-[18px] fill-1"
-                        style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span id="ratingValue" class="text-xl font-bold">0.0</span>
+                    <span class="material-symbols-outlined text-[18px] fill-1" style="font-variation-settings: 'FILL' 1;">star</span>
                 </div>
-                <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide text-center">
-                    Avaliação</p>
+                <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide text-center">Avaliação</p>
+                <div class="w-full mt-2">
+                    <div class="progress-bar">
+                        <div id="ratingProgress" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
-            <div
-                class="flex flex-1 flex-col items-center justify-center gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark border border-gray-100 dark:border-white/5 shadow-sm">
+            <div class="flex flex-1 flex-col items-center justify-center gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark border border-gray-100 dark:border-white/5 shadow-sm">
                 <div class="flex items-center gap-1 text-white">
-                    <span class="text-xl font-bold dark:text-white text-slate-900">350+</span>
+                    <span id="servicesCount" class="text-xl font-bold dark:text-white text-slate-900">0</span>
                 </div>
-                <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide text-center">
-                    Serviços</p>
+                <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide text-center">Serviços</p>
+                <div class="w-full mt-2">
+                    <div class="progress-bar">
+                        <div id="servicesProgress" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
-            <div
-                class="flex flex-1 flex-col items-center justify-center gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark border border-gray-100 dark:border-white/5 shadow-sm">
+            <div class="flex flex-1 flex-col items-center justify-center gap-1 rounded-xl p-4 bg-white dark:bg-surface-dark border border-gray-100 dark:border-white/5 shadow-sm">
                 <div class="flex items-center gap-1 text-white">
-                    <span class="text-xl font-bold dark:text-white text-slate-900">98%</span>
+                    <span id="returnRate" class="text-xl font-bold dark:text-white text-slate-900">0%</span>
                 </div>
-                <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide text-center">
-                    Retorno</p>
+                <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide text-center">Retorno</p>
+                <div class="w-full mt-2">
+                    <div class="progress-bar">
+                        <div id="returnProgress" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- About Section -->
-    <div class="mt-8 px-4">
-        <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
-            Sobre
-        </h3>
-        <p class="text-slate-600 dark:text-slate-300 text-base font-light leading-relaxed">
-            Enfermeira dedicada especializada em cuidados domiciliares para idosos e recuperação pós-operatória.
-            Apaixonada por fornecer atendimento compassivo e profissional, garantindo o bem-estar e conforto dos
-            pacientes no ambiente familiar.
-        </p>
-    </div>
+
     <!-- Specialties Tags -->
     <div class="mt-8 px-4">
         <h3 class="text-lg font-bold mb-3">Especialidades</h3>
-        <div class="flex flex-wrap gap-2">
-            <span
-                class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
-                Geriatria
-            </span>
-            <span
-                class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
-                Pós-operatório
-            </span>
-            <span
-                class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
-                Curativos
-            </span>
-            <span
-                class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
-                Injeções
-            </span>
-            <span
-                class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
-                Sinais Vitais
+        <div id="specialtiesContainer" class="flex flex-wrap gap-2">
+            <span class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-primary/10 text-primary border border-primary/20">
+                Carregando...
             </span>
         </div>
     </div>
-    <!-- Availability/Schedule Preview -->
-    <div class="mt-8">
-        <div class="px-4 flex justify-between items-end mb-3">
-            <h3 class="text-lg font-bold">Disponibilidade</h3>
-            <button class="text-primary text-sm font-medium hover:underline">Ver calendário</button>
-        </div>
-        <!-- Horizontal Scroll Container -->
-        <div class="flex overflow-x-auto pb-4 px-4 gap-3 no-scrollbar snap-x">
-            <!-- Active Day -->
-            <div
-                class="flex-shrink-0 snap-start flex flex-col items-center justify-center w-[72px] h-[84px] rounded-xl bg-primary text-background-dark shadow-lg shadow-primary/20 cursor-pointer border border-primary">
-                <span class="text-xs font-bold uppercase mb-1">Hoje</span>
-                <span class="text-2xl font-bold">12</span>
-                <span class="text-xs font-medium opacity-80">Out</span>
+
+    <!-- Modal para Meus Dados -->
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="text-lg font-bold">Meus Dados</h3>
+                <button id="closeProfileModalBtn" class="modal-close">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
-            <!-- Other Days -->
-            <div
-                class="flex-shrink-0 snap-start flex flex-col items-center justify-center w-[72px] h-[84px] rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-slate-500 dark:text-slate-400 cursor-pointer hover:border-primary/50 transition-colors">
-                <span class="text-xs font-medium uppercase mb-1">Sex</span>
-                <span class="text-2xl font-bold text-slate-900 dark:text-white">13</span>
-                <span class="text-xs font-medium opacity-60">Out</span>
-            </div>
-            <div
-                class="flex-shrink-0 snap-start flex flex-col items-center justify-center w-[72px] h-[84px] rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-slate-500 dark:text-slate-400 cursor-pointer hover:border-primary/50 transition-colors">
-                <span class="text-xs font-medium uppercase mb-1">Sáb</span>
-                <span class="text-2xl font-bold text-slate-900 dark:text-white">14</span>
-                <span class="text-xs font-medium opacity-60">Out</span>
-            </div>
-            <div
-                class="flex-shrink-0 snap-start flex flex-col items-center justify-center w-[72px] h-[84px] rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-slate-500 dark:text-slate-400 cursor-pointer hover:border-primary/50 transition-colors">
-                <span class="text-xs font-medium uppercase mb-1">Seg</span>
-                <span class="text-2xl font-bold text-slate-900 dark:text-white">16</span>
-                <span class="text-xs font-medium opacity-60">Out</span>
-            </div>
-            <div
-                class="flex-shrink-0 snap-start flex flex-col items-center justify-center w-[72px] h-[84px] rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-slate-500 dark:text-slate-400 cursor-pointer hover:border-primary/50 transition-colors">
-                <span class="text-xs font-medium uppercase mb-1">Ter</span>
-                <span class="text-2xl font-bold text-slate-900 dark:text-white">17</span>
-                <span class="text-xs font-medium opacity-60">Out</span>
-            </div>
-        </div>
-        <!-- Time Slots -->
-        <div class="px-4 flex gap-2 flex-wrap">
-            <span
-                class="px-4 py-2 rounded-lg bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-sm font-medium text-slate-700 dark:text-slate-300">09:00</span>
-            <span
-                class="px-4 py-2 rounded-lg bg-white dark:bg-surface-dark border border-primary text-primary text-sm font-medium bg-primary/5">10:30</span>
-            <span
-                class="px-4 py-2 rounded-lg bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-sm font-medium text-slate-700 dark:text-slate-300">14:00</span>
-            <span
-                class="px-4 py-2 rounded-lg bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-sm font-medium text-slate-400 dark:text-slate-600 line-through decoration-slate-500">16:00</span>
-        </div>
-    </div>
-    <!-- Reviews Section -->
-    <div class="mt-8 mb-6">
-        <div class="px-4 flex justify-between items-center mb-3">
-            <h3 class="text-lg font-bold">Avaliações (128)</h3>
-            <span class="flex items-center text-primary font-bold text-sm">
-                4.9 <span class="material-symbols-outlined text-sm ml-1 fill-1"
-                    style="font-variation-settings: 'FILL' 1;">star</span>
-            </span>
-        </div>
-        <div class="flex overflow-x-auto pb-4 px-4 gap-4 no-scrollbar">
-            <!-- Review Card 1 -->
-            <div
-                class="flex-shrink-0 w-[280px] p-4 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/5">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="h-8 w-8 rounded-full bg-cover bg-center" data-alt="User avatar male"
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDqNzsbYFHJE_SNWCssIF5VSxnJ66cLP-o1wEG8x1JyUIJFBO4AQtt1YBTNQSQDMHYsNn1KLTA-iZIiUcKFW_qjQ90UEXcQh7_7NpV6qIcR3QU_LWn-Nt6_z9VD6lfWOYDkn17S_J9A8BxTQhOl-FdRFLtMp5uaEd3S7f9Jm1ID8KsCaU6e4hJX0XkQ_Zve6mcsqyItbZN9TaRMd3w5BM9vcxats2J4Latqjwduz2opqs0u-2ZPZK8v5d_06ttj-5O8A_XI5-q_sI31");'>
+            <div class="p-6">
+                <div id="profileLoading" class="text-gray-600 dark:text-gray-300 mb-3">Carregando perfil...</div>
+                <div id="profileEmpty" class="hidden text-gray-600 dark:text-gray-300 mb-3">Sem dados de perfil</div>
+                <form id="profileForm" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nome</label>
+                            <input id="inputName" type="text" class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                            <input id="inputEmail" type="email" class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Telefone</label>
+                            <input id="inputPhone" type="tel" class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Cidade</label>
+                            <input id="inputCity" type="text" class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white" />
+                        </div>
                     </div>
+                    
+                    <!-- Campos específicos para prestadores -->
+                    <div id="providerFields" style="display: none;">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Especialidade</label>
+                                <select id="specialtySelect" class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white">
+                                    <option value="">Selecione uma especialidade</option>
+                                    <option value="Enfermagem">Enfermagem</option>
+                                    <option value="Fisioterapia">Fisioterapia</option>
+                                    <option value="Nutrição">Nutrição</option>
+                                    <option value="Psicologia">Psicologia</option>
+                                    <option value="Cuidador">Cuidador</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Anos de Experiência</label>
+                                <input id="experienceInput" type="number" min="0" max="50" class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Taxa de Consulta (R$)</label>
+                                <input id="consultationFeeInput" type="number" step="0.01" min="0" class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white" />
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div>
-                        <p class="text-sm font-bold leading-tight dark:text-white text-slate-900">Carlos Mendes</p>
-                        <p class="text-xs text-slate-500">2 dias atrás</p>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sobre</label>
+                        <textarea id="inputBio" rows="4" class="w-full px-4 py-2 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white"></textarea>
                     </div>
-                    <div class="ml-auto flex">
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
+                    
+                    <div class="flex gap-3">
+                        <button id="btnSaveProfile" type="button" class="px-5 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl">Salvar</button>
+                        <button id="btnResetProfile" type="button" class="px-5 py-2 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 font-semibold rounded-xl">Recarregar</button>
+                        <button id="btnDeleteProfile" type="button" class="ml-auto px-5 py-2 bg-red-100 dark:bg-red-900/20 hover:bg-red-200 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 font-semibold rounded-xl">Excluir Conta</button>
                     </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-300 line-clamp-3">
-                    A Dra. Ana foi excelente com minha mãe. Muito atenciosa, pontual e profissional. Recomendo
-                    fortemente seus serviços.
-                </p>
-            </div>
-            <!-- Review Card 2 -->
-            <div
-                class="flex-shrink-0 w-[280px] p-4 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/5">
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="h-8 w-8 rounded-full bg-cover bg-center" data-alt="User avatar female"
-                        style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYqiXsF85Rd6-BRhhxr2JdoB1pFemdCU9wN0c1-McTFtwV04qaG5wdZkA_ghX5A1rYb7GZlKXboAlgsdqkrEtfc1mf7rVDf9W_mzE-NCTLX-yIULi0_HoFHH2eK8ySsXjjvCCKhX6gWbfn_khGvHaUTBTWkOzeoxPkP2k42VLEIyHQbthhJXfrnqJlRK9pm6UflMu6iVtC60ihq40u1PgwWF-PI85zI6AFh06ZEMcHTlmuJ9BAoS84iYX46L6RfS77kMybpIuCMle_");'>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold leading-tight dark:text-white text-slate-900">Fernanda Lima</p>
-                        <p class="text-xs text-slate-500">1 semana atrás</p>
-                    </div>
-                    <div class="ml-auto flex">
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined text-primary text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="material-symbols-outlined text-primary/30 text-[16px] fill-1"
-                            style="font-variation-settings: 'FILL' 1;">star</span>
-                    </div>
-                </div>
-                <p class="text-sm text-slate-600 dark:text-slate-300 line-clamp-3">
-                    Ótima profissional, mas houve um pequeno atraso. No entanto, o atendimento compensou.
-                </p>
+                </form>
             </div>
         </div>
     </div>
-    <!-- Location Preview -->
-    <div class="px-4 pb-8">
-        <h3 class="text-lg font-bold mb-3">Localização</h3>
-        <div class="relative h-32 w-full rounded-xl overflow-hidden mb-2">
-            <img class="w-full h-full object-cover opacity-80"
-                data-alt="Map view showing Sao Paulo area with service radius" data-location="São Paulo Map"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD1WBdmndjOce99yjQEqDF-TP_ZK7WsrjjAwUXqQ0LgsStcenHWFEz7m0iKCywReYfjpjVwY9kZ-AgcjV2rzTWLubzB4V_DgCzFdcw36IM_e8qyYxMGy0v0AVtYwWVtLZ64tF06_b3mTzlTy9kKWCgnNwL8coofSdgokd91BivkQMorMUIEDiaRPYkVtoqp775ubemZb5mGdhqj6PgHkNdMCeNPYrki2nCaaEKmksdLPutFLywJLIUPR-kMWq8JuUNImCAR1aEyegA" />
-            <div class="absolute inset-0 bg-gradient-to-t from-background-dark/80 to-transparent flex items-end p-4">
-                <div class="flex items-center gap-2">
-                    <div class="bg-primary p-1.5 rounded-full text-black">
-                        <span class="material-symbols-outlined text-[16px]">navigation</span>
-                    </div>
-                    <span class="text-white text-sm font-medium">Atende num raio de 10km</span>
-                </div>
-            </div>
-        </div>
-    </div>
-     <!-- Bottom Navigation (Mobile) -->
+
+    <!-- Container para Toast Notifications -->
+    <div id="toastContainer"></div>
+
+    <!-- Bottom Navigation (Mobile) -->
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-white/5 py-3">
         <div class="container mx-auto px-4">
             <div class="flex justify-around items-center">
@@ -351,24 +440,19 @@
                     <span class="material-symbols-outlined text-2xl">home</span>
                     <span class="text-xs mt-1">Início</span>
                 </a>
-                
                 <a href="search.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
                     <span class="material-symbols-outlined text-2xl">search</span>
                     <span class="text-xs mt-1">Buscar</span>
                 </a>
-         
-                
                 <a href="appointments.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary transition-colors">
                     <span class="material-symbols-outlined text-2xl">calendar_month</span>
                     <span class="text-xs mt-1">Agendamentos</span>
                 </a>
-
-                     <a href="chat.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors relative">
+                <a href="chat.html" class="flex flex-col items-center text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors relative">
                     <span class="material-symbols-outlined text-2xl">chat_bubble</span>
                     <span class="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
                     <span class="text-xs mt-1">Chat</span>
                 </a>
-                
                 <a href="profile.html" class="flex flex-col items-center text-primary">
                     <span class="material-symbols-outlined text-2xl">person</span>
                     <span class="text-xs mt-1">Perfil</span>
@@ -376,6 +460,7 @@
             </div>
         </div>
     </nav>
-</body>
 
+    <script type="module" src="/src/js/profileClient.js"></script>
+</body>
 </html>

@@ -5,48 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Serviços - Muilo</title>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet">
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-    <!-- Tailwind Configuration -->
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#13ec5b",
-                        "primary-dark": "#11d852",
-                        "background-light": "#f6f8f6",
-                        "background-dark": "#102216",
-                        "surface-dark": "#1A2E22",
-                        "surface-light": "#ffffff",
-                        "text-dark": "#1a2e22",
-                        "text-light": "#f6f8f6"
-                    },
-                    fontFamily: {
-                        "display": ["Lexend", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.75rem",
-                        "lg": "1rem",
-                        "xl": "1.25rem",
-                        "2xl": "1.5rem"
-                    }
-                },
-            },
-        }
-    </script>
+    <link rel="stylesheet" href="/src/styles/main.css">
 
     <style>
         body {
@@ -125,8 +84,6 @@
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-text-dark dark:text-text-light font-display">
-
-
     <!-- Navigation Header -->
     <header class="sticky top-0 z-50 bg-white dark:bg-surface-dark border-b border-gray-100 dark:border-white/5">
         <div class="container mx-auto px-4 py-3">
@@ -134,9 +91,6 @@
                 <div class="container mx-auto px-6">
                     <div class="flex items-center justify-between h-16">
                         <a href="dashboard.html" class="flex items-center gap-2">
-                            <div class=" p-2 rounded-lg">
-                                <span class="material-symbols-outlined text-primary text-xl">local_hospital</span>
-                            </div>
                             <span class="text-lg font-bold text-text-dark dark:text-white">Muilo</span>
                         </a>
                         <div class="flex items-center gap-6">
@@ -1024,7 +978,7 @@
         }
     </script>
     <script type="module">
-        import { API_URL } from '../../utils/config.js';
+        import { API_URL } from '../utils/config.js';
         const servicesList = document.getElementById('servicesList');
         const resultsCount = document.getElementById('resultsCount');
         const loadingState = document.getElementById('loadingState');

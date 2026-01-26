@@ -6,91 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muilo - Plataforma de Saúde</title>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-    <!-- Tailwind Configuration -->
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#13ec5b",
-                        "primary-dark": "#11d852",
-                        "background-light": "#f6f8f6",
-                        "background-dark": "#102216",
-                        "surface-dark": "#1A2E22",
-                        "surface-light": "#ffffff",
-                        "text-dark": "#1a2e22",
-                        "text-light": "#f6f8f6"
-                    },
-                    fontFamily: {
-                        "display": ["Lexend", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.75rem",
-                        "lg": "1rem",
-                        "xl": "1.25rem",
-                        "2xl": "1.5rem"
-                    }
-                },
-            },
-        }
-    </script>
-
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Lexend', sans-serif;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(19, 236, 91, 0.15);
-        }
-
-        .provider-card:hover {
-            transform: scale(1.03);
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #13ec5b 0%, #0bc44a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(19, 236, 91, 0.3), transparent);
-        }
-    </style>
+    <link rel="stylesheet" href="/src/styles/main.css">
 </head>
 
 <body
@@ -102,9 +18,6 @@
             <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
                 <div class="flex items-center gap-3">
-                    <div class=" p-0 rounded-full">
-                        <span class="material-symbols-outlined text-primary text-4xl">local_hospital</span>
-                    </div>
                     <span class="text-xl font-bold tracking-tight text-text-dark dark:text-white">Muilo</span>
                 </div>
 
@@ -205,10 +118,10 @@
                 <!-- Hero Image -->
                 <div class="relative">
                     <div class="rounded-3xl overflow-hidden shadow-2xl shadow-black/20">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdJTCp7JVOVpdUpKnxH6aNk5IB8SWIQcxK29HZsAflVh_Z_AY0oU0oyxCE9ytaw8algJbeN7ZVO6MW38CBkGMue3Q2d0YON-GM9Smu9QXGj-2pAsP2n5O0Slh3oyltd1Mg4tKclGjELqWHRMbEabvmZyJkTSPzBxMV5CrxyVLGk-JqfkXCeJEMeyYyIFYGPzW8y1GdwLu5b-b269pg-Ho0eTJiARmfQBS5bRpylCpXV308kMgbaTPZuxhHmbREMOCDzlZCVN0SMSZm"
+                        <img src="src/assets/img/internamento-1.jpg"
                             alt="Profissional de saúde usando tecnologia digital" class="w-full h-[400px] object-cover">
                         <div
-                            class="absolute inset-0 bg-gradient-to-t from-background-dark/60 via-transparent to-transparent">
+                            class="absolute rounded-3xl inset-0 bg-gradient-to-t from-background-dark/60 via-transparent to-transparent">
                         </div>
                     </div>
 
@@ -362,9 +275,7 @@
             <div class="grid md:grid-cols-4 gap-8">
                 <div>
                     <div class="flex items-center gap-2 mb-6">
-                        <div class="bg-primary/10 p-2 rounded-full">
-                            <span class="material-symbols-outlined text-primary text-2xl">local_hospital</span>
-                        </div>
+                     
                         <span class="text-xl font-bold">Muilo</span>
                     </div>
                     <p class="text-gray-400 text-sm">
