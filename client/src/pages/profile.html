@@ -219,7 +219,8 @@
                         <a href="/src/pages/login.html" class="px-4 py-2 text-gray-700 dark:text-gray-300 font-medium hover:text-primary dark:hover:text-primary transition-colors">Entrar</a>
                         <a href="/src/pages/register.html" class="px-4 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all">Cadastrar</a>
                     </div>
-                    <div id="headerUser" class="hidden items-center gap-3">
+                    <div id="headerUser" class="hidden items-center gap-3 flex">
+                        <div id="headerAvatar" class="hidden bg-center bg-cover rounded-full h-8 w-8 border border-primary/20 shadow-sm"></div>
                         <span id="headerUserName" class="text-gray-700 dark:text-gray-300 font-medium"></span>
                         <button id="headerLogout" class="px-4 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors">Sair</button>
                     </div>
@@ -228,19 +229,13 @@
         </div>
     </nav>
     
-    <!-- Top App Bar -->
-    <div class="sticky top-0 z-50 flex items-center justify-between bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md p-4 pb-2 border-b border-gray-200 dark:border-white/5 transition-colors">
-        <h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Perfil</h2>
-        <button class="flex size-10 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors group">
-            <span class="material-symbols-outlined text-slate-400 group-hover:text-red-500 transition-colors" style="font-size: 24px;">favorite</span>
-        </button>
-    </div>
+
 
     <!-- Profile Header -->
     <div class="flex flex-col items-center p-6 gap-4">
         <div class="avatar-upload-container">
             <div id="profileAvatar" class="bg-center bg-no-repeat bg-cover rounded-full h-32 w-32 border-4 border-primary/20 shadow-xl shadow-primary/5"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBxYq1uaj0ayx0M2J8RxIvFxS3QnF5CyJg93nyV-K-AnwinJR2qaUEB7jNrc9Edxn7rVdPZjmGMYv9-L4SFWhOMHDVh7zcnvVZma6Fno0G9Y4k859L3noWTrpVn0xalCz0G1lcI1dQu1BrDQ8dQX7AsrQCJGrCPV-0DrlXPbASIgurkYaEqxIE1KwmPsVovofi1gk7glvPnpxS_rmvYrU8Obpnzd5S_pq5jbuo2SstrP_lVWMT0LVL_dZT-C0WcCfxYolDQQLBBbyrm");'>
+                >
             </div>
             <div class="avatar-edit-overlay" id="avatarEditOverlay">
                 <span class="material-symbols-outlined">photo_camera</span>
@@ -464,3 +459,4 @@
     <script type="module" src="/src/js/profileClient.js"></script>
 </body>
 </html>
+ 

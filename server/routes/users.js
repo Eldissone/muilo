@@ -4,8 +4,14 @@ import { auth } from '../middleware/auth.js';
 import Appointment from '../models/Appointment.js';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs'; // ← Adicione esta importação
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
+
+// Obter __dirname em ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Get user profile (Protected)
 router.get('/profile', auth, async (req, res) => {
@@ -23,8 +29,9 @@ router.get('/profile', auth, async (req, res) => {
 // Configurar multer para upload de imagens
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        // Em produção, você deve usar um serviço como AWS S3 ou Cloudinary
-        const uploadDir = 'uploads/avatars/';
+        // Usar caminho absoluto para o diretório de uploads
+        const uploadDir = path.join(__dirname, '../uploads/avatars/');
+        
         // Criar diretório se não existir
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
@@ -34,7 +41,9 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         // Gerar nome único para o arquivo
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, req.userId + '-' + uniqueSuffix + path.extname(file.originalname));
+        const extension = path.extname(file.originalname);
+        const filename = req.userId + '-' + uniqueSuffix + extension;
+        cb(null, filename);
     }
 });
 
@@ -45,17 +54,33 @@ const upload = multer({
     },
     fileFilter: function (req, file, cb) {
         // Aceitar apenas imagens
-        if (file.mimetype.startsWith('image/')) {
+        const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        
+        if (allowedMimes.includes(file.mimetype)) {
             cb(null, true);
         } else {
-            cb(new Error('Apenas imagens são permitidas'));
+            cb(new Error('Tipo de arquivo não suportado. Apenas imagens são permitidas.'));
         }
     }
 });
 
+// Middleware para tratar erros do multer
+const handleMulterError = (err, req, res, next) => {
+    if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+            return res.status(400).json({ message: 'Arquivo muito grande. Tamanho máximo: 5MB' });
+        }
+        return res.status(400).json({ message: err.message });
+    } else if (err) {
+        return res.status(400).json({ message: err.message });
+    }
+    next();
+};
+
 // Rota para upload de avatar
-router.patch('/:id/avatar', auth, upload.single('avatar'), async (req, res) => {
+router.patch('/:id/avatar', auth, upload.single('avatar'), handleMulterError, async (req, res) => {
     try {
+        // Verificar se usuário tem permissão
         if (req.userId !== req.params.id && req.userRole !== 'admin') {
             return res.status(403).json({ message: 'Access denied' });
         }
@@ -64,33 +89,51 @@ router.patch('/:id/avatar', auth, upload.single('avatar'), async (req, res) => {
             return res.status(400).json({ message: 'Nenhuma imagem enviada' });
         }
         
-        // Criar URL para a imagem
-        // Em produção, use uma URL completa do seu servidor ou CDN
+        // Criar URL relativa para a imagem
         const avatarUrl = `/uploads/avatars/${req.file.filename}`;
         
-        // Atualizar usuário com nova URL do avatar
-        const user = await User.findByIdAndUpdate(
-            req.params.id,
-            { avatar: avatarUrl },
-            { new: true }
-        ).select('-password');
-        
+        // Primeiro verificar se usuário existe
+        const user = await User.findById(req.params.id);
         if (!user) {
+            // Deletar arquivo se usuário não existir
+            fs.unlinkSync(req.file.path);
             return res.status(404).json({ message: 'User not found' });
         }
+        
+        // Se usuário já tinha um avatar, deletar o arquivo antigo
+        if (user.avatar && user.avatar.includes('/uploads/avatars/')) {
+            const oldAvatarPath = path.join(__dirname, '..', user.avatar);
+            if (fs.existsSync(oldAvatarPath)) {
+                fs.unlinkSync(oldAvatarPath);
+            }
+        }
+        
+        // Atualizar usuário com nova URL do avatar
+        user.avatar = avatarUrl;
+        await user.save();
+        
+        const userResponse = user.toObject();
+        delete userResponse.password;
         
         res.json({
             message: 'Avatar atualizado com sucesso',
             avatar: avatarUrl,
-            user: user
+            user: userResponse
         });
         
     } catch (error) {
         console.error('Erro ao fazer upload do avatar:', error);
-        res.status(500).json({ message: error.message });
+        
+        // Deletar arquivo em caso de erro
+        if (req.file && req.file.path) {
+            fs.unlinkSync(req.file.path);
+        }
+        
+        res.status(500).json({ message: error.message || 'Erro ao processar upload' });
     }
 });
 
+// Restante do código permanece o mesmo...
 // Get user by ID (Protected - próprio usuário ou admin)
 router.get('/:id', auth, async (req, res) => {
     try {
@@ -153,11 +196,21 @@ router.delete('/:id', auth, async (req, res) => {
             return res.status(403).json({ message: 'Access denied' });
         }
         
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findById(req.params.id);
         
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+        
+        // Deletar avatar se existir
+        if (user.avatar && user.avatar.includes('/uploads/avatars/')) {
+            const avatarPath = path.join(__dirname, '..', user.avatar);
+            if (fs.existsSync(avatarPath)) {
+                fs.unlinkSync(avatarPath);
+            }
+        }
+        
+        await User.findByIdAndDelete(req.params.id);
         
         // Aqui você pode querer deletar dados relacionados
         // como appointments, reviews, etc.

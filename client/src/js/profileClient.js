@@ -1,5 +1,6 @@
 // profileClient.js
 const API_BASE_URL = 'http://localhost:3000/api';
+const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
 
 // Estado da aplicação
 let currentProfile = null;
@@ -100,12 +101,22 @@ function initializeAuth() {
     const authEl = document.getElementById('headerAuth');
     const userEl = document.getElementById('headerUser');
     const nameEl = document.getElementById('headerUserName');
+    const avatarEl = document.getElementById('headerAvatar');
     
     if (authEl && userEl) {
         if (token) {
             authEl.classList.add('hidden');
             userEl.classList.remove('hidden');
-            if (nameEl) nameEl.textContent = user?.name || 'Minha Conta';
+            if (nameEl) nameEl.textContent = formatDisplayName(user?.name);
+            if (avatarEl) {
+                const avatarUrl = user?.avatar ? resolveAvatarUrl(user.avatar) : null;
+                if (avatarUrl) {
+                    avatarEl.style.backgroundImage = `url("${avatarUrl}")`;
+                    avatarEl.classList.remove('hidden');
+                } else {
+                    avatarEl.classList.add('hidden');
+                }
+            }
         } else {
             authEl.classList.remove('hidden');
             userEl.classList.add('hidden');
@@ -137,6 +148,21 @@ function checkAuth() {
 // Obter token de autenticação
 function getAuthToken() {
     return localStorage.getItem('token');
+}
+
+function resolveAvatarUrl(path) {
+    if (!path) return null;
+    if (/^https?:\/\//.test(path)) return path;
+    if (path.startsWith('/')) return `${API_ORIGIN}${path}`;
+    return `${API_ORIGIN}/${path}`;
+}
+
+function formatDisplayName(name) {
+    if (!name || typeof name !== 'string') return 'Minha Conta';
+    const parts = name.trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return 'Minha Conta';
+    if (parts.length === 1) return parts[0];
+    return `${parts[0]} ${parts[parts.length - 1]}`;
 }
 
 // Headers padrão para requisições
@@ -212,7 +238,7 @@ function updateProfileHeader(profile) {
     }
     
     if (elements.headerUserName) {
-        elements.headerUserName.textContent = profile.name || 'Minha Conta';
+        elements.headerUserName.textContent = formatDisplayName(profile.name);
     }
     
     // Role (cargo)
@@ -240,8 +266,13 @@ function updateProfileHeader(profile) {
     }
     
     // Avatar
-    if (elements.profileAvatar && profile.avatar) {
-        elements.profileAvatar.style.backgroundImage = `url("${profile.avatar}")`;
+    if (elements.profileAvatar) {
+        const userLS = JSON.parse(localStorage.getItem('user')||'{}');
+        const avatarPath = profile.avatar || userLS.avatar;
+        const avatarUrl = resolveAvatarUrl(avatarPath);
+        if (avatarUrl) {
+            elements.profileAvatar.style.backgroundImage = `url("${avatarUrl}")`;
+        }
     }
     
     // Verificado
@@ -628,7 +659,10 @@ function setupEventListeners() {
                 // Atualizar avatar na página
                 if (result && result.avatar) {
                     if (elements.profileAvatar) {
-                        elements.profileAvatar.style.backgroundImage = `url("${result.avatar}")`;
+                        const avatarUrl = resolveAvatarUrl(result.avatar);
+                        if (avatarUrl) {
+                            elements.profileAvatar.style.backgroundImage = `url("${avatarUrl}")`;
+                        }
                     }
                     
                     // Atualizar localStorage

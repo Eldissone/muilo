@@ -107,7 +107,8 @@
                                 <a href="/src/pages/register.html"
                                     class="px-4 py-2 bg-primary hover:bg-primary-dark text-background-dark font-semibold rounded-xl transition-all">Cadastrar</a>
                             </div>
-                            <div id="headerUser" class="hidden items-center gap-3">
+                            <div id="headerUser" class="hidden items-center gap-3 flex">
+                                <div id="headerAvatar" class="hidden bg-center bg-cover rounded-full h-8 w-8 border border-primary/20 shadow-sm"></div>
                                 <span id="headerUserName" class="text-gray-700 dark:text-gray-300 font-medium"></span>
 
                             </div>
@@ -1085,7 +1086,17 @@
         const authEl = document.getElementById('headerAuth');
         const userEl = document.getElementById('headerUser');
         const nameEl = document.getElementById('headerUserName');
+        const avatarEl = document.getElementById('headerAvatar');
         const logout = document.getElementById('headerLogout');
+
+        const apiOrigin = (window.importMetaEnvApiUrl || 'http://localhost:3000');
+
+        function resolveAvatarUrl(path) {
+            if (!path) return null;
+            if (/^https?:\/\//.test(path)) return path;
+            if (path.startsWith('/')) return `${apiOrigin}${path}`;
+            return `${apiOrigin}/${path}`;
+        }
 
         if (authEl && userEl) {
             if (token) {
@@ -1100,6 +1111,15 @@
                             : parts[0];
                 } else if (nameEl) {
                     nameEl.textContent = 'Minha Conta';
+                }
+                if (avatarEl) {
+                    const avatarUrl = user?.avatar ? resolveAvatarUrl(user.avatar) : null;
+                    if (avatarUrl) {
+                        avatarEl.style.backgroundImage = `url("${avatarUrl}")`;
+                        avatarEl.classList.remove('hidden');
+                    } else {
+                        avatarEl.classList.add('hidden');
+                    }
                 }
             } else {
                 authEl.classList.remove('hidden');
